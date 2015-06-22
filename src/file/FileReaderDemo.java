@@ -13,7 +13,7 @@ public class FileReaderDemo {
 			try {
 				   FileReader fileReader=new FileReader(file);
 				   int ch;
-				  while( (ch=fileReader.read())!=-1){
+				  while( (ch=fileReader.read())!=-1) {
 					    System.out.print((char)ch);
 					    Thread.sleep(10);
 				  }
