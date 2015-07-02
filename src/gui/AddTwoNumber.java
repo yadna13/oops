@@ -5,20 +5,15 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.sql.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import com.sun.corba.se.spi.orbutil.fsm.Action;
 
 public class AddTwoNumber extends JFrame implements ActionListener{
 	
@@ -96,7 +91,27 @@ public class AddTwoNumber extends JFrame implements ActionListener{
 		int num1=Integer.parseInt(firstNum);
 		int num2=Integer.parseInt(secondNum);
 		int rr=num1+num2;
-		 result.setText("Result is  = "+rr);
+		 result.setText("Result is and data is persisted into db also = "+rr);
+		//JDBC Programming
+		 try {
+			 		//Loading the driver
+			 		Class.forName("com.mysql.jdbc.Driver");
+			 		//making connection with database which name is swing
+			 		Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/swing","root", "root");
+			 		//creating query to interact with database
+			 		String sql="insert into sum_result_tbl(fnum,snum,result,doe) values(?,?,?,?)";
+			 		PreparedStatement pstmt=conn.prepareStatement(sql);
+			 		pstmt.setInt(1,num1);
+			 		pstmt.setInt(2,num2);
+			 		pstmt.setInt(3,rr);
+			 		java.util.Date c=new java.util.Date();
+			 		pstmt.setDate(4,new java.sql.Date(c.getTime()));
+			 		//fire the query now
+			 		pstmt.execute();
+		 }catch(Exception exe){
+			 exe.printStackTrace();
+		 }
+		 
 		//JOptionPane.showMessageDialog(this, "Hey do not click here!");
 	}
 
